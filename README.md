@@ -6,30 +6,6 @@ SafeRoute is a high-performance JavaFX application designed to simulate micro- a
 
 ---
 
-## 📐 System Architecture Diagram
-
-+-------------------------------------------------------------------------+
-|                           MainApp (JavaFX UI)                           |
-|  - Responsive BorderPane & StackPane Layouts                           |
-|  - Interactive Controls: ComboBox, Slider, Buttons, Canvas HUD          |
-+--------------------+------------------------------------+---------------+
-|                                    |
-v                                    v
-+--------------------+-------------------+   +------------+---------------+
-|      Algorithm & Simulation Engine     |   |    Networking & Services     |
-|  - Graph & Dijkstra Pathfinding        |   |  - WeatherService (HttpClient) |
-|  - RoomGrid Cellular Automata (Micro)  |   |  - ExecutorService ThreadPool |
-+--------------------+-------------------+   +------------+---------------+
-|                                    |
-v                                    v
-+--------------------+-------------------+   +------------+---------------+
-|           Model Domain                 |   |    Persistence Layer         |
-|  - Node, Edge, Student, RoomGrid       |   |  - SQLite Database Manager   |
-|  - Multi-hazard State Tracker          |   |  - CRUD Audit Logger           |
-+----------------------------------------+   +----------------------------+
-
----
-
 ## 🛠️ Feature Mapping against Course Evaluation Rubric
 
 ### 1. Advanced Object-Oriented Programming (OOP)
