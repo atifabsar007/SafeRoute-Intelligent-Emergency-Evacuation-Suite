@@ -1,4 +1,4 @@
-# 🛡️ SafeRoute-Intelligent-Emergency-Evacuation-Suite
+# 🛡️ SafeRoute-Intelligent Emergency Evacuation Suite
 
 ## Academic Building Disaster Simulation and Evacuation Pathfinding System
 
