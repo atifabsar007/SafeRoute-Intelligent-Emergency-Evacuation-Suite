@@ -1,4 +1,4 @@
-# 🛡️ SafeRoute - KUET Emergency Evacuation Portal
+# 🛡️ SafeRoute-Intelligent-Emergency-Evacuation-Suite
 
 ## Academic Building Disaster Simulation and Evacuation Pathfinding System
 
@@ -258,9 +258,10 @@ SafeRoute was developed as an academic software project to demonstrate practical
 
 # 👨‍💻 Developer
 
-**Atif Absar**
+**Md. Atif Absar**
 
-**Project Name:** SafeRoute - KUET Emergency Evacuation Portal
+**Project Name:** SafeRoute - Intelligent-Emergency-Evacuation-Suite
+
 
 ---
 
