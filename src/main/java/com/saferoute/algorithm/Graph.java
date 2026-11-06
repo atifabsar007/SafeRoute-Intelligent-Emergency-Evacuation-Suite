@@ -25,41 +25,79 @@ public class Graph {
     public Collection<Node> getAllNodes() { return nodes.values(); }
 
     public List<Node> findPath(Node start, Node target, boolean isEarthquake) {
+        // Reject null or foreign nodes before entering the graph search.
+        if (start == null || target == null ||
+                nodes.get(start.getId()) != start ||
+                nodes.get(target.getId()) != target) {
+            return Collections.emptyList();
+        }
+
         Map<Node, Double> distances = new HashMap<>();
         Map<Node, Node> parentMap = new HashMap<>();
-        PriorityQueue<NodeCost> pq = new PriorityQueue<>(Comparator.comparingDouble(nc -> nc.cost));
+        PriorityQueue<NodeCost> pq = new PriorityQueue<>(
+                Comparator.comparingDouble(nc -> nc.cost));
 
-        for (Node n : nodes.values()) distances.put(n, Double.POSITIVE_INFINITY);
+        for (Node node : nodes.values()) {
+            distances.put(node, Double.POSITIVE_INFINITY);
+        }
 
         distances.put(start, 0.0);
         pq.add(new NodeCost(start, 0.0));
 
         while (!pq.isEmpty()) {
             NodeCost current = pq.poll();
-            if (current.node.equals(target)) break;
+            double bestKnown = distances.get(current.node);
+
+            // Ignore stale queue entries left behind by a better route.
+            if (Double.compare(current.cost, bestKnown) > 0) {
+                continue;
+            }
+
+            if (current.node == target) {
+                break;
+            }
 
             for (Edge edge : current.node.getNeighbors()) {
                 Node neighbor = edge.getTarget();
+                Double neighborDistance = distances.get(neighbor);
+                if (neighborDistance == null) {
+                    continue; // Ignore edges pointing outside this graph.
+                }
+
                 double edgeCost = edge.getCost(isEarthquake);
+                // Dijkstra requires finite, non-negative edge weights.
+                if (!Double.isFinite(edgeCost) || edgeCost < 0.0) {
+                    continue;
+                }
 
-                if (Double.isInfinite(edgeCost)) continue;
+                double newDistance = current.cost + edgeCost;
+                if (!Double.isFinite(newDistance)) {
+                    continue;
+                }
 
-                double newDist = distances.get(current.node) + edgeCost;
-                if (newDist < distances.get(neighbor)) {
-                    distances.put(neighbor, newDist);
+                if (newDistance < neighborDistance) {
+                    distances.put(neighbor, newDistance);
                     parentMap.put(neighbor, current.node);
-                    pq.add(new NodeCost(neighbor, newDist));
+                    pq.add(new NodeCost(neighbor, newDistance));
                 }
             }
         }
 
-        List<Node> path = new LinkedList<>();
-        Node curr = target;
-        while (curr != null) {
-            path.add(0, curr);
-            curr = parentMap.get(curr);
+        if (Double.isInfinite(distances.get(target))) {
+            return Collections.emptyList();
         }
-        return (path.size() > 1 && path.get(0).equals(start)) ? path : Collections.emptyList();
+
+        LinkedList<Node> path = new LinkedList<>();
+        Node current = target;
+        while (current != null) {
+            path.addFirst(current);
+            if (current == start) {
+                return path;
+            }
+            current = parentMap.get(current);
+        }
+
+        return Collections.emptyList();
     }
 
     private static class NodeCost {
